@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper';
 
@@ -32,10 +32,10 @@ const TopChartCard = ({
           alt={song?.title}
         />
         <div className='flex-1 flex flex-col justify-center mx-3'>
-          <Link to={`/songs/${song.key}`}>
+          <Link to={`/songs/${song?.key}`}>
             <p className='text-xl font-bold text-white'>{song?.title}</p>
           </Link>
-          <Link to={'/artists/${song?.artists[0].adamid}'}>
+          <Link to={`/artists/${song?.artists[0].adamid}`}>
             <p className='text-ase  text-gray-300 mt-1'>{song?.subtitle}</p>
           </Link>
         </div>
@@ -53,17 +53,15 @@ const TopChartCard = ({
 
 const TopPlay = () => {
   const dispatch = useDispatch();
-
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const { data } = useGetTopChartsQuery();
   const divRef = useRef(null);
-
   const topPlays = data?.tracks?.slice(0, 5);
-
-  const handlePauseClick = () => {
+  console.log(data);
+  const handlePause = () => {
     dispatch(playPause(false));
   };
-  const handlePlayClick = () => {
+  const handlePlay = (song, i) => {
     dispatch(setActiveSong({ song, data, i }));
     dispatch(playPause(true));
   };
@@ -92,8 +90,9 @@ const TopPlay = () => {
               i={i}
               isPlaying={isPlaying}
               activeSong={activeSong}
-              handlePause={handlePauseClick}
-              handlePlay={() => handlePlayClick(song, i)}
+              data={data}
+              handlePause={handlePause}
+              handlePlay={() => handlePlay(song, data, i)}
             />
           ))}
         </div>
