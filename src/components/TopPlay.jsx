@@ -92,7 +92,7 @@ const TopPlay = () => {
               isPlaying={isPlaying}
               activeSong={activeSong}
               handlePause={handlePause}
-              handlePlay={() => handlePlay(song, data, i)}
+              handlePlay={() => handlePlay(song, i)}
             />
           ))}
         </div>
